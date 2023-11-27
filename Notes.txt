@@ -1,0 +1,9 @@
+
+
+->working flow
+* added dependencies
+* Created productList Screen
+* Create card_model
+* added DBHelper Class
+    - imported packages, sqflite, path_provider, dart:io, cart_model
+    - create database using Database
