@@ -97,25 +97,50 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                 productImage[index].toString(),
                               ),
                             ),
-                            SizedBox(width: 10,),
-                            Column(
-                              children: [
-                                Text(
-                                  productName[index].toString(),
-                                  style: TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.w500),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  productUnit[index].toString(),
-                                  style: TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.w500),
-                                ),
-                              ],
+                            SizedBox(
+                              width: 10,
                             ),
-
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    productName[index].toString(),
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    productUnit[index].toString() +
+                                        " " +
+                                        r"$" +
+                                        productPrice[index].toString(),
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Container(
+                                      height: 35,
+                                      width: 100,
+                                      decoration: BoxDecoration(
+                                          color: Colors.green,
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                      child: Center(
+                                        child: Text(
+                                          'Add to cart',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                           ],
                         )
                       ],

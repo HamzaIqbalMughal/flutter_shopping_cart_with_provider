@@ -11,3 +11,5 @@
     - add insert() for insertion in database
 
 * added cart_provider
+* now in main's build function, retrun ChangeNotificationProvider() instead of Material, 
+    - whereas retrun MaterialApp in child
