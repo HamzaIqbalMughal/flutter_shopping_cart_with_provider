@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:flutter_shopping_cart_with_provider/Models/cart_model.dart';
+import 'package:flutter_shopping_cart_with_provider/cart_provider.dart';
+import 'package:flutter_shopping_cart_with_provider/db_helper.dart';
+import 'package:provider/provider.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({super.key});
@@ -11,6 +15,9 @@ class ProductListScreen extends StatefulWidget {
 }
 
 class _ProductListScreenState extends State<ProductListScreen> {
+
+  DBHelper? dbHelper = DBHelper();
+
   List<String> productName = [
     'Mango',
     'Orange',
@@ -42,6 +49,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final cart = Provider.of<CartProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -52,17 +60,23 @@ class _ProductListScreenState extends State<ProductListScreen> {
         ),
         centerTitle: true,
         actions: [
-          badges.Badge(
-            badgeContent: Text(
-              '0',
-              style: TextStyle(color: Colors.white),
-            ),
-            badgeAnimation: badges.BadgeAnimation.rotation(
-              animationDuration: Duration(seconds: 2),
-            ),
-            child: Icon(
-              Icons.shopping_bag_outlined,
-              color: Colors.white,
+          Center(
+            child: badges.Badge(
+              badgeContent: Consumer<CartProvider>(
+                builder: (context, value, child){
+                  return Text(
+                    value.getCounter().toString(),
+                    style: TextStyle(color: Colors.white),
+                  );
+                },
+              ),
+              badgeAnimation: badges.BadgeAnimation.rotation(
+                animationDuration: Duration(seconds: 2),
+              ),
+              child: Icon(
+                Icons.shopping_bag_outlined,
+                color: Colors.white,
+              ),
             ),
           ),
           // Icon(Icons.shopping_bag_outlined, color: Colors.white,),
@@ -123,17 +137,40 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                   ),
                                   Align(
                                     alignment: Alignment.centerRight,
-                                    child: Container(
-                                      height: 35,
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                          color: Colors.green,
-                                          borderRadius:
-                                              BorderRadius.circular(5)),
-                                      child: Center(
-                                        child: Text(
-                                          'Add to cart',
-                                          style: TextStyle(color: Colors.white),
+                                    child: InkWell(
+                                      onTap: (){
+                                        dbHelper!.insert(
+                                          Cart(
+                                            id: index,
+                                            productId: index.toString(),
+                                            productName: productName[index].toString(),
+                                            initialPrice: double.parse(productPrice[index].toString()),
+                                            productPrice: double.parse(productPrice[index].toString()),
+                                            quantity: 1,
+                                            unitTag: productUnit[index].toString(),
+                                            image: productImage[index].toString(),
+                                          )
+                                        ).then((value) {
+                                          
+                                          cart.addInTotalPrice(double.parse(productPrice[index].toString()),);
+                                          cart.incrementCounter();
+                                          print('Product is added to cart');
+                                        }).onError((error, stackTrace) {
+                                          print((error.toString()));
+                                        });
+                                      },
+                                      child: Container(
+                                        height: 35,
+                                        width: 100,
+                                        decoration: BoxDecoration(
+                                            color: Colors.green,
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                        child: Center(
+                                          child: Text(
+                                            'Add to cart',
+                                            style: TextStyle(color: Colors.white),
+                                          ),
                                         ),
                                       ),
                                     ),

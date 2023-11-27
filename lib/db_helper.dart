@@ -37,8 +37,8 @@ class DBHelper{
           id INTEGER PRIMARY KEY , 
           productId VARCHAR UNIQUE,
           productName TEXT,
-          initialPrice INTEGER, 
-          productPrice INTEGER , 
+          initialPrice DOUBLE, 
+          productPrice DOUBLE, 
           quantity INTEGER, 
           unitTag TEXT , i
           mage TEXT 
