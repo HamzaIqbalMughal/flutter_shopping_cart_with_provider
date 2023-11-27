@@ -7,3 +7,7 @@
 * added DBHelper Class
     - imported packages, sqflite, path_provider, dart:io, cart_model
     - create database using Database
+    - add function initDatabase() to initialize/create datatabase
+    - add insert() for insertion in database
+
+* added cart_provider
