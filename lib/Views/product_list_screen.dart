@@ -3,6 +3,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:flutter_shopping_cart_with_provider/Models/cart_model.dart';
 import 'package:flutter_shopping_cart_with_provider/cart_provider.dart';
 import 'package:flutter_shopping_cart_with_provider/db_helper.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 class ProductListScreen extends StatefulWidget {
@@ -34,8 +35,9 @@ class _ProductListScreenState extends State<ProductListScreen> {
     'KG',
     'Dozen',
     'KG',
+    'Dozen'
   ];
-  List<int> productPrice = [10, 20, 30, 40, 50, 60, 70, 80];
+  List<int> productPrice = [10, 20, 30, 40, 50, 60, 70];
 
   List<String> productImage = [
     'https://www.shutterstock.com/shutterstock/photos/144185134/display_1500/stock-photo-mango-fruit-isolated-on-white-background-144185134.jpg',
@@ -139,6 +141,8 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                     alignment: Alignment.centerRight,
                                     child: InkWell(
                                       onTap: (){
+                                        Fluttertoast.showToast(msg: 'In onTap');
+
                                         dbHelper!.insert(
                                           Cart(
                                             id: index,
@@ -156,7 +160,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                           cart.incrementCounter();
                                           print('Product is added to cart');
                                         }).onError((error, stackTrace) {
-                                          print((error.toString()));
+                                          print('error'+error.toString());
                                         });
                                       },
                                       child: Container(

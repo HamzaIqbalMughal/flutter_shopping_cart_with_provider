@@ -10,13 +10,13 @@ class Cart {
 
   Cart({
     required this.id,
-    required this.productName,
-    required this.image,
-    required this.initialPrice,
     required this.productId,
+    required this.productName,
+    required this.initialPrice,
     required this.productPrice,
     required this.quantity,
     required this.unitTag,
+    required this.image,
   });
 
   Cart.fromMap(Map<dynamic, dynamic> res)
