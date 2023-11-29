@@ -13,6 +13,7 @@ class DBHelper {
     }
 
     _db = await initDatabase();
+    return _db;
   }
 
   initDatabase() async {
@@ -27,8 +28,10 @@ class DBHelper {
   }
 
   _onCreate(Database db, int version) async {
+    // await db.execute(
+    //     'CREATE TABLE cart (id INTEGER PRIMARY KEY , productId VARCHAR UNIQUE,productName TEXT,initialPrice INTEGER, productPrice INTEGER , quantity INTEGER, unitTag TEXT , image TEXT )');
     await db.execute(
-        'CREATE TABLE cart (id INTEGER PRIMARY KEY , productId VARCHAR UNIQUE,productName TEXT,initialPrice INTEGER, productPrice INTEGER , quantity INTEGER, unitTag TEXT , image TEXT )');
+        'CREATE TABLE cart (id INTEGER PRIMARY KEY , productId VARCHAR,productName TEXT,initialPrice INTEGER, productPrice INTEGER , quantity INTEGER, unitTag TEXT , image TEXT )');
   }
 
   // _onCreate (Database db, int version) async{

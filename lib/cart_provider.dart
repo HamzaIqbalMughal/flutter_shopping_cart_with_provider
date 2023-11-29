@@ -10,7 +10,7 @@ class CartProvider with ChangeNotifier {
 
   void _setPrefItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('card_item', _counter);
+    prefs.setInt('cart_item', _counter);
     prefs.setDouble('total_price', _totalPrice);
     notifyListeners();
   }
@@ -18,6 +18,7 @@ class CartProvider with ChangeNotifier {
   void _getPrefItems() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _counter = prefs.getInt('cart_item') ?? 0;
+    // print("Cart item: "+pr)
     _totalPrice = prefs.getDouble('total_price') ?? 0.0;
     notifyListeners();
   }
@@ -26,7 +27,7 @@ class CartProvider with ChangeNotifier {
 
   void incrementCounter() {
     _counter++;
-    _setPrefItems();
+    // _setPrefItems();
     notifyListeners();
   }
 
