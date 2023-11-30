@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter_shopping_cart_with_provider/Models/cart_model.dart';
+import 'package:flutter_shopping_cart_with_provider/Views/cart_screen.dart';
 import 'package:flutter_shopping_cart_with_provider/cart_provider.dart';
 import 'package:flutter_shopping_cart_with_provider/db_helper.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -62,22 +63,27 @@ class _ProductListScreenState extends State<ProductListScreen> {
         ),
         centerTitle: true,
         actions: [
-          Center(
-            child: badges.Badge(
-              badgeContent: Consumer<CartProvider>(
-                builder: (context, value, child){
-                  return Text(
-                    value.getCounter().toString(),
-                    style: TextStyle(color: Colors.white),
-                  );
-                },
-              ),
-              badgeAnimation: badges.BadgeAnimation.rotation(
-                animationDuration: Duration(seconds: 2),
-              ),
-              child: Icon(
-                Icons.shopping_bag_outlined,
-                color: Colors.white,
+          InkWell(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen()));
+            },
+            child: Center(
+              child: badges.Badge(
+                badgeContent: Consumer<CartProvider>(
+                  builder: (context, value, child){
+                    return Text(
+                      value.getCounter().toString(),
+                      style: TextStyle(color: Colors.white),
+                    );
+                  },
+                ),
+                badgeAnimation: badges.BadgeAnimation.rotation(
+                  animationDuration: Duration(seconds: 2),
+                ),
+                child: Icon(
+                  Icons.shopping_bag_outlined,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -190,7 +196,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                 );
               },
             ),
-          )
+          ),
         ],
       ),
     );

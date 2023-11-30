@@ -31,7 +31,7 @@ class DBHelper {
     // await db.execute(
     //     'CREATE TABLE cart (id INTEGER PRIMARY KEY , productId VARCHAR UNIQUE,productName TEXT,initialPrice INTEGER, productPrice INTEGER , quantity INTEGER, unitTag TEXT , image TEXT )');
     await db.execute(
-        'CREATE TABLE cart (id INTEGER PRIMARY KEY , productId VARCHAR,productName TEXT,initialPrice INTEGER, productPrice INTEGER , quantity INTEGER, unitTag TEXT , image TEXT )');
+        'CREATE TABLE cart (id INTEGER PRIMARY KEY , productId VARCHAR,productName TEXT,initialPrice DOUBLE, productPrice DOUBLE , quantity INTEGER, unitTag TEXT , image TEXT )');
   }
 
   // _onCreate (Database db, int version) async{
@@ -60,5 +60,11 @@ class DBHelper {
     await dbClient!.insert('cart', cart.toMap());
 
     return cart;
+  }
+
+  Future<List<Cart>> getCartList() async {
+    var dbClient = await db;
+    final List<Map<String, Object?>> queryResult = await dbClient!.query('cart');
+    return queryResult.map((e) => Cart.fromMap(e)).toList();
   }
 }
