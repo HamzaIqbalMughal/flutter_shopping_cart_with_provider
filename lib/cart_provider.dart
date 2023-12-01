@@ -64,7 +64,7 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void remoteFromTotalPrice(double productPrice) {
+  void removeFromTotalPrice(double productPrice) {
     _totalPrice = _totalPrice - productPrice;
     _setPrefItems();
     notifyListeners();

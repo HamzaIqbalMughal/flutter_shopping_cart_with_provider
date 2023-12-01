@@ -15,6 +15,7 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   DBHelper dbHelper = DBHelper();
+
   @override
   Widget build(BuildContext context) {
     final cart = Provider.of<CartProvider>(context);
@@ -109,9 +110,12 @@ class _CartScreenState extends State<CartScreen> {
                                               ),
                                               InkWell(
                                                 onTap: () {
-                                                  dbHelper!.delete(snapshot.data![index].id!);
+                                                  dbHelper!.delete(snapshot
+                                                      .data![index].id!);
                                                   cart.decrementCounter();
-                                                  cart.remoteFromTotalPrice(snapshot.data![index].productPrice!);
+                                                  cart.removeFromTotalPrice(
+                                                      snapshot.data![index]
+                                                          .productPrice!);
                                                 },
                                                 child: Icon(Icons.delete),
                                               ),
@@ -149,11 +153,87 @@ class _CartScreenState extends State<CartScreen> {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             5)),
-                                                child: Center(
-                                                  child: Text(
-                                                    'Add to cart',
-                                                    style: TextStyle(
-                                                        color: Colors.white),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(4.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      InkWell(
+                                                        onTap: () {
+                                                          int quantity = snapshot.data![index].quantity!;
+                                                          double price = snapshot.data![index].initialPrice!;
+                                                          quantity--;
+                                                          double? newPrice = price * quantity;
+                                                          if(quantity >= 1){
+                                                            dbHelper!.updateQuantity(
+                                                                Cart(
+                                                                  id: snapshot.data![index].id!,
+                                                                  productId: snapshot.data![index].productId.toString(),
+                                                                  productName: snapshot.data![index].productName.toString(),
+                                                                  initialPrice: snapshot.data![index].initialPrice!,
+                                                                  productPrice: newPrice,
+                                                                  quantity: quantity,
+                                                                  unitTag: snapshot.data![index].unitTag.toString(),
+                                                                  image: snapshot.data![index].image.toString(),
+                                                                )
+                                                            ).then((value) {
+                                                              newPrice = 0;
+                                                              quantity = 0;
+                                                              cart.removeFromTotalPrice(snapshot.data![index].initialPrice!);
+                                                            }).onError((error, stackTrace) {
+                                                              print('Error in Update Quantity'+ error.toString());
+                                                            });
+                                                          }
+
+                                                        },
+                                                        child: Icon(
+                                                          Icons.remove,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        snapshot.data![index]
+                                                            .quantity
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                      InkWell(
+                                                        onTap: () {
+                                                          int quantity = snapshot.data![index].quantity!;
+                                                          double price = snapshot.data![index].initialPrice!;
+                                                          quantity++;
+                                                          double? newPrice = price *quantity;
+                                                          dbHelper!.updateQuantity(
+                                                            Cart(
+                                                                id: snapshot.data![index].id!,
+                                                                productId: snapshot.data![index].productId.toString(),
+                                                                productName: snapshot.data![index].productName.toString(),
+                                                                initialPrice: snapshot.data![index].initialPrice!,
+                                                                productPrice: newPrice,
+                                                                quantity: quantity,
+                                                                unitTag: snapshot.data![index].unitTag.toString(),
+                                                                image: snapshot.data![index].image.toString(),
+                                                            )
+                                                          ).then((value) {
+                                                            newPrice = 0;
+                                                            quantity = 0;
+                                                            cart.addInTotalPrice(snapshot.data![index].initialPrice!);
+                                                          }).onError((error, stackTrace) {
+                                                            print('Error in Update Quantity'+ error.toString());
+                                                          });
+
+                                                        },
+                                                        child: Icon(
+                                                          Icons.add,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -176,7 +256,9 @@ class _CartScreenState extends State<CartScreen> {
               }),
           Consumer<CartProvider>(builder: (context, value, child) {
             return Visibility(
-              visible: value.getTotalPrice().toStringAsFixed(2) == "0.00" ? false: true,
+              visible: value.getTotalPrice().toStringAsFixed(2) == "0.00"
+                  ? false
+                  : true,
               child: Column(
                 children: [
                   ReuseableWidget(

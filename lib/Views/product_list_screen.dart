@@ -147,8 +147,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                                     alignment: Alignment.centerRight,
                                     child: InkWell(
                                       onTap: (){
-                                        Fluttertoast.showToast(msg: 'In onTap');
-
+                                        // Fluttertoast.showToast(msg: 'In onTap');
                                         dbHelper!.insert(
                                           Cart(
                                             id: index,
